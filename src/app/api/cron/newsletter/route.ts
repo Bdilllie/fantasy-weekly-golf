@@ -6,7 +6,7 @@ import { SlashGolfService } from "@/lib/api";
 // Initialize Resend with API key from environment
 const resend = new Resend(process.env.RESEND_API_KEY || "re_123456789"); // Fallback for dev
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
         // Security check: Only allow Cron or authenticated calls
         // In Vercel, cron jobs have a specific header
@@ -14,6 +14,8 @@ export async function GET() {
         // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) { ... }
 
         // 1. Fetch Data
+        const { searchParams } = new URL(request.url);
+        const testEmail = searchParams.get('test_email');
 
         // Get active/recently completed tournament
         const recentTournament = await prisma.tournament.findFirst({
@@ -188,6 +190,67 @@ export async function GET() {
         ].filter((e: string | null): e is string => !!e);
 
         const uniqueRecipients = Array.from(new Set(recipients));
+
+        if (testEmail) {
+            // Send samples to the test email
+            if (process.env.RESEND_API_KEY) {
+                // Send Newsletter Sample
+                await resend.emails.send({
+                    from: 'The Gentleman\'s Gamble <commissioner@fantasygolfweek.com>',
+                    to: testEmail,
+                    subject: `[SAMPLE] Weekly Roundup - ${recentTournament.name}`,
+                    html: emailHtml,
+                });
+
+                // Send Individual Recap Sample (using first team found)
+                if (teams.length > 0) {
+                    const team = teams[0];
+                    const pick = team.picks[0] || { golferName: 'Scottie Scheffler', position: 'T1', rawEarnings: 1000000, earnings: 1000000, multiplier: 1 };
+                    const individualHtml = `
+                        <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background: white; padding: 30px; border: 1px solid #e6e6e6; border-radius: 12px;">
+                            <h2 style="color: #00573F; margin-top: 0; font-serif: serif;">Weekly Performance Report</h2>
+                            <p style="color: #666;">Hello <strong>Test User</strong>,</p>
+                            <p>Here are the official results for your pick in <strong>${recentTournament.name}</strong>:</p>
+                            
+                            <div style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                                <table style="width: 100%; border-collapse: collapse;">
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #666;">Your Golfer:</td>
+                                        <td style="padding: 8px 0; font-weight: bold; text-align: right;">${pick.golferName}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #666;">Finish Position:</td>
+                                        <td style="padding: 8px 0; font-weight: bold; text-align: right;">${pick.position || 'N/A'}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #666;">Raw Earnings:</td>
+                                        <td style="padding: 8px 0; font-weight: bold; text-align: right;">$${pick.rawEarnings.toLocaleString()}</td>
+                                    </tr>
+                                    ${(pick.multiplier && pick.multiplier > 1) ? `
+                                    <tr>
+                                        <td style="padding: 8px 0; color: #00573F; font-weight: bold;">${recentTournament.type} Boost:</td>
+                                        <td style="padding: 8px 0; color: #00573F; font-weight: bold; text-align: right;">x${pick.multiplier}</td>
+                                    </tr>
+                                    ` : ''}
+                                    <tr style="border-top: 2px solid #ddd;">
+                                        <td style="padding: 15px 0 0 0; font-size: 18px; font-weight: bold; color: #1a1a1a;">Total Points:</td>
+                                        <td style="padding: 15px 0 0 0; font-size: 18px; font-weight: bold; color: #00573F; text-align: right;">${pick.earnings.toLocaleString()} pts</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <p style="text-align: center; font-size: 12px; color: #999;">[This is a sample sent to ${testEmail}]</p>
+                        </div>
+                    `;
+                    await resend.emails.send({
+                        from: 'Gamble Stats <stats@fantasygolfweek.com>',
+                        to: testEmail,
+                        subject: `[SAMPLE] Official Results: ${recentTournament.name}`,
+                        html: individualHtml,
+                    });
+                }
+            }
+            return NextResponse.json({ success: true, message: `Samples sent to ${testEmail}` });
+        }
 
         if (process.env.RESEND_API_KEY) {
             await resend.emails.send({

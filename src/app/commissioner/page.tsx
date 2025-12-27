@@ -18,7 +18,7 @@ export default async function CommissionerPage() {
     const session = await auth();
 
     // Only allow Brent Dillie (or authorized emails)
-    const isAdmin = session?.user?.email === "brent@fantasygolf.com" || session?.user?.email === "brentdillie@gmail.com";
+    const isAdmin = session?.user?.email?.toLowerCase() === "bdillie@gmail.com" || session?.user?.email?.toLowerCase() === "brent@premium-ppe.com";
 
     if (!isAdmin) {
         redirect("/");
@@ -93,8 +93,8 @@ export default async function CommissionerPage() {
                                             <button
                                                 type="submit"
                                                 className={`px-4 py-2 rounded-lg text-xs font-black uppercase tracking-tight transition shadow-sm ${team.isPaid
-                                                        ? "bg-gray-100 text-gray-400 hover:bg-red-50 hover:text-red-500"
-                                                        : "bg-[#00573F] text-white hover:bg-[#003829] hover:shadow-md"
+                                                    ? "bg-gray-100 text-gray-400 hover:bg-red-50 hover:text-red-500"
+                                                    : "bg-[#00573F] text-white hover:bg-[#003829] hover:shadow-md"
                                                     }`}
                                             >
                                                 {team.isPaid ? "Mark Unpaid" : "Confirm Payment"}

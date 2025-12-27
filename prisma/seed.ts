@@ -68,7 +68,7 @@ async function main() {
     const password = await bcrypt.hash("password123", 10);
 
     // Create Main User
-    const mainUserEmail = "brent@fantasygolf.com";
+    const mainUserEmail = "bdillie@gmail.com";
     const mainUser = await prisma.user.upsert({
         where: { email: mainUserEmail },
         update: {},

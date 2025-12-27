@@ -7,9 +7,9 @@ const resend = new Resend(process.env.RESEND_API_KEY || "re_123");
 
 export async function GET(request: Request) {
     try {
-        // Security check: Only allow calls with the CRON_SECRET or from Vercel/GitHub
         const { searchParams } = new URL(request.url);
         const secret = searchParams.get('secret');
+        const testEmail = searchParams.get('test_email');
 
         if (process.env.CRON_SECRET && secret !== process.env.CRON_SECRET) {
             return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -40,15 +40,17 @@ export async function GET(request: Request) {
             include: { user: true },
         });
 
-        if (teamsMissingPicks.length === 0) {
+        if (teamsMissingPicks.length === 0 && !testEmail) {
             return NextResponse.json({ message: "All users have already submitted their picks!" });
         }
+
+        const effectiveTeams = testEmail ? [{ user: { email: testEmail, name: "Test User" }, name: "Test Team" }] : teamsMissingPicks;
 
         // 3. Send reminders
         const results = [];
         const baseUrl = process.env.NEXTAUTH_URL || "https://fantasygolfweek.com";
 
-        for (const team of teamsMissingPicks) {
+        for (const team of effectiveTeams as any) {
             if (team.user && team.user.email) {
                 const emailHtml = `
                     <div style="font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; max-width: 600px; margin: 0 auto; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden;">
