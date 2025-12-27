@@ -1,0 +1,38 @@
+name: Weekly Pick Reminder
+
+on:
+  schedule:
+    # Runs every Wednesday at 3 PM UTC (10 AM EST)
+    - cron: '0 15 * * 3'
+  
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  send-reminders:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger Pick Reminders
+        run: |
+          echo "⛳ Sending weekly pick reminders..."
+          
+          # We use the CRON_SECRET if established, or just trigger the endpoint
+          # Note: SITE_URL should be the full Vercel URL (e.g., https://fantasy-weekly-golf.vercel.app)
+          response=$(curl -s -w "\n%{http_code}" -X GET "${{ secrets.SITE_URL }}/api/cron/reminder?secret=${{ secrets.CRON_SECRET }}")
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          echo "Response: $body"
+          
+          if [ $http_code -eq 200 ]; then
+            echo "✅ Reminders sent successfully!"
+          else
+            echo "❌ Failed to send reminders (HTTP $http_code)"
+            exit 1
+          fi
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "⚠️ Reminder sync failed. Check the logs above for details."
