@@ -16,11 +16,21 @@ export async function GET(request: Request) {
         }
 
         // 1. Find the upcoming tournament
-        // We look for tournaments with status 'upcoming'
-        const tournament = await prisma.tournament.findFirst({
+        let tournament = await prisma.tournament.findFirst({
             where: { status: "upcoming" },
             orderBy: { weekNum: "asc" },
         });
+
+        if (!tournament && testEmail) {
+            tournament = {
+                id: "sample",
+                name: "Sony Open (Sample)",
+                dates: "Jan 15-18",
+                type: "PGA TOUR",
+                weekNum: 1,
+                status: "upcoming"
+            } as any;
+        }
 
         if (!tournament) {
             return NextResponse.json({ message: "No upcoming tournament found. No reminders sent." });

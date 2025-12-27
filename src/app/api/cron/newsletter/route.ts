@@ -18,10 +18,24 @@ export async function GET(request: Request) {
         const testEmail = searchParams.get('test_email');
 
         // Get active/recently completed tournament
-        const recentTournament = await prisma.tournament.findFirst({
+        let recentTournament = await prisma.tournament.findFirst({
             where: { status: { in: ["active", "completed"] } },
             orderBy: { weekNum: "desc" },
         });
+
+        if (!recentTournament && testEmail) {
+            // Mock tournament for sample
+            recentTournament = {
+                id: "sample",
+                name: "The Masters (Sample)",
+                dates: "April 10-13",
+                type: "MAJOR",
+                weekNum: 13,
+                status: "active",
+                purse: 20000000,
+                createdAt: new Date()
+            } as any;
+        }
 
         if (!recentTournament) {
             return NextResponse.json({ message: "No recent tournament found" });
