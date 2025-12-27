@@ -84,7 +84,7 @@ export default function RegisterPage() {
                     <h1 className="text-5xl font-serif font-bold text-white mb-2">
                         Register Your Team
                     </h1>
-                    <p className="text-[#FDDA0D] font-bold uppercase tracking-widest text-sm">Join the 2025 Pursuit</p>
+                    <p className="text-[#FDDA0D] font-bold uppercase tracking-widest text-sm">Join the 2026 Pursuit</p>
                 </div>
 
                 {/* Card */}

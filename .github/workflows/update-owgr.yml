@@ -1,0 +1,36 @@
+name: Update OWGR Rankings
+
+on:
+  schedule:
+    # Runs every Tuesday at 2 PM UTC (9 AM EST)
+    - cron: '0 14 * * 2'
+  
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  update-rankings:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Trigger OWGR Sync
+        run: |
+          echo "🏌️ Triggering OWGR rankings update..."
+          
+          response=$(curl -s -w "\n%{http_code}" -X GET ${{ secrets.SITE_URL }}/api/sync-owgr)
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          echo "Response: $body"
+          
+          if [ $http_code -eq 200 ]; then
+            echo "✅ OWGR rankings updated successfully!"
+          else
+            echo "❌ Failed to update rankings (HTTP $http_code)"
+            exit 1
+          fi
+      
+      - name: Notify on failure
+        if: failure()
+        run: |
+          echo "⚠️ OWGR sync failed. Check the logs above for details."

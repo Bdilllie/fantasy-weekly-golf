@@ -15,7 +15,7 @@ const CURRENT_TOURNAMENT = {
 const REMAINING_TOURNAMENTS = [
   { week: 1, name: "Sony Open in Hawaii", dates: "Jan 15-18", type: "PGA TOUR" },
   { week: 2, name: "The American Express", dates: "Jan 22-25", type: "PGA TOUR" },
-  { week: 3, name: "Farmers Insurance Open", dates: "Jan 28-31", type: "PGA TOUR" },
+  { week: 3, name: "Farmers Insurance Open", dates: "Jan 29-Feb 1", type: "PGA TOUR" },
   { week: 4, name: "WM Phoenix Open", dates: "Feb 5-8", type: "PGA TOUR" },
   { week: 5, name: "AT&T Pebble Beach Pro-Am", dates: "Feb 12-15", type: "SIGNATURE" },
 ];

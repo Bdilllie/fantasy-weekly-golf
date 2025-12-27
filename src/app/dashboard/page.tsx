@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import Header from "@/components/Header";
 import PickForm from "@/components/PickForm";
+import { getTop200Golfers } from "@/lib/golfers";
 
 async function getTeamData(userId: string) {
     const team = await prisma.team.findUnique({
@@ -69,6 +70,7 @@ export default async function DashboardPage() {
     const activeTournament = await getCurrentTournament();
     const overallRank = await getTeamRank(team.id);
     const divRank = team.division ? await getDivisionRank(team.id, team.division) : null;
+    const availableGolfers = await getTop200Golfers();
 
     // Find pick for active tournament
     const currentPick = activeTournament
@@ -217,7 +219,7 @@ export default async function DashboardPage() {
                                     <PickForm
                                         tournamentId={activeTournament.id}
                                         usedGolfers={usedGolfers}
-                                        golfers={["Scottie Scheffler", "Rory McIlroy", "Xander Schauffele", "Viktor Hovland", "Ludvig Aberg", "Patrick Cantlay", "Collin Morikawa", "Max Homa"]}
+                                        golfers={availableGolfers}
                                         multiplier={activeTournament.type === "MAJOR" ? 2 : (activeTournament.type === "SIGNATURE" || activeTournament.type === "FEDEX") ? 1.5 : 1}
                                     />
                                 )

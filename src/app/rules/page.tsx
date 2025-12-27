@@ -195,8 +195,8 @@ export default async function RulesPage() {
                             <span>🏆</span> The Prize Purse Distribution
                         </h2>
                         <p className="text-gray-600 mb-8 text-sm leading-relaxed">
-                            The Gentleman's Gamble rewards both the season-long grind and the pressure of the postseason.
-                            100% of the $20,000 pool is redistributed to the winners.
+                            The Gentleman&apos;s Gamble rewards both the season-long grind and the pressure of the postseason.
+                            100% of the ${(teamCount * 500).toLocaleString()} pool is redistributed to the winners.
                         </p>
 
                         <div className="overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
@@ -214,15 +214,15 @@ export default async function RulesPage() {
                                     </tr>
                                     <tr className="bg-yellow-50/40 not-italic">
                                         <td className="py-4 px-6 font-bold text-[#1A1A1A]">Playoff Champion 🏆</td>
-                                        <td className="py-4 px-6 font-serif font-bold text-[#00573F] text-right text-xl">$6,250</td>
+                                        <td className="py-4 px-6 font-serif font-bold text-[#00573F] text-right text-xl">${(teamCount * 500 * 0.3125).toLocaleString()}</td>
                                     </tr>
                                     <tr className="not-italic">
                                         <td className="py-4 px-6 font-semibold text-gray-700">Playoff Runner-Up</td>
-                                        <td className="py-4 px-6 font-mono font-bold text-gray-900 text-right">$3,000</td>
+                                        <td className="py-4 px-6 font-mono font-bold text-gray-900 text-right">${(teamCount * 500 * 0.15).toLocaleString()}</td>
                                     </tr>
                                     <tr className="not-italic">
                                         <td className="py-2 px-6 text-sm text-gray-500">Semifinalists (2x)</td>
-                                        <td className="py-2 px-6 font-mono font-bold text-gray-400 text-right text-sm">$500 ea. ($1,000)</td>
+                                        <td className="py-2 px-6 font-mono font-bold text-gray-400 text-right text-sm">${(teamCount * 500 * 0.025).toLocaleString()} ea. (${(teamCount * 500 * 0.05).toLocaleString()})</td>
                                     </tr>
 
                                     {/* Regular Season */}
@@ -231,15 +231,15 @@ export default async function RulesPage() {
                                     </tr>
                                     <tr className="not-italic">
                                         <td className="py-4 px-6 font-bold text-[#1A1A1A]">Overall 1st Place (Season Leader)</td>
-                                        <td className="py-4 px-6 font-serif font-bold text-blue-900 text-right text-lg">$4,250</td>
+                                        <td className="py-4 px-6 font-serif font-bold text-blue-900 text-right text-lg">${(teamCount * 500 * 0.2125).toLocaleString()}</td>
                                     </tr>
                                     <tr className="not-italic">
                                         <td className="py-4 px-6 font-semibold text-gray-700">Overall 2nd Place</td>
-                                        <td className="py-4 px-6 font-mono font-bold text-gray-900 text-right">$2,500</td>
+                                        <td className="py-4 px-6 font-mono font-bold text-gray-900 text-right">${(teamCount * 500 * 0.125).toLocaleString()}</td>
                                     </tr>
                                     <tr className="not-italic text-sm">
                                         <td className="py-4 px-6 font-semibold text-gray-600">Overall 3rd Place</td>
-                                        <td className="py-4 px-6 font-mono font-bold text-gray-800 text-right">$1,500</td>
+                                        <td className="py-4 px-6 font-mono font-bold text-gray-800 text-right">${(teamCount * 500 * 0.075).toLocaleString()}</td>
                                     </tr>
 
                                     {/* Division Bonuses */}
@@ -248,7 +248,7 @@ export default async function RulesPage() {
                                     </tr>
                                     <tr className="not-italic">
                                         <td className="py-4 px-6 font-semibold text-gray-700">Division Winners (4x)</td>
-                                        <td className="py-4 px-6 font-mono font-bold text-gray-900 text-right text-sm">$250 ea. ($1,000)</td>
+                                        <td className="py-4 px-6 font-mono font-bold text-gray-900 text-right text-sm">${(teamCount * 500 * 0.0125).toLocaleString()} ea. (${(teamCount * 500 * 0.05).toLocaleString()})</td>
                                     </tr>
 
                                     {/* Admin */}
@@ -256,13 +256,13 @@ export default async function RulesPage() {
                                         <td className="py-4 px-6 text-sm text-gray-700 font-bold flex items-center gap-2">
                                             <span>🛠️</span> Commissioner Fee (2.5% Site Fees)
                                         </td>
-                                        <td className="py-4 px-6 font-mono font-black text-[#1A1A1A] text-right text-sm">$500</td>
+                                        <td className="py-4 px-6 font-mono font-black text-[#1A1A1A] text-right text-sm">${(teamCount * 500 * 0.025).toLocaleString()}</td>
                                     </tr>
                                 </tbody>
                                 <tfoot className="bg-[#00573F]/5 border-t-2 border-gray-200">
                                     <tr>
-                                        <td className="py-5 px-6 font-black uppercase text-xs text-[#00573F]">Total Entry Pool (40 x $500)</td>
-                                        <td className="py-5 px-6 font-serif font-black text-[#00573F] text-right text-2xl">$20,000</td>
+                                        <td className="py-5 px-6 font-black uppercase text-xs text-[#00573F]">Total Entry Pool ({teamCount} x $500)</td>
+                                        <td className="py-5 px-6 font-serif font-black text-[#00573F] text-right text-2xl">${(teamCount * 500).toLocaleString()}</td>
                                     </tr>
                                 </tfoot>
                             </table>
