@@ -8,14 +8,16 @@ const resend = new Resend(process.env.RESEND_API_KEY || "re_123456789"); // Fall
 
 export async function GET(request: Request) {
     try {
-        // Security check: Only allow Cron or authenticated calls
-        // In Vercel, cron jobs have a specific header
-        // const authHeader = request.headers.get('authorization');
-        // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) { ... }
+        const { searchParams } = new URL(request.url);
+        const secret = searchParams.get('secret');
+        const testEmail = searchParams.get('test_email');
+
+        // Security check: Verify CRON_SECRET if configured
+        if (process.env.CRON_SECRET && secret !== process.env.CRON_SECRET) {
+            return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+        }
 
         // 1. Fetch Data
-        const { searchParams } = new URL(request.url);
-        const testEmail = searchParams.get('test_email');
 
         // Get active/recently completed tournament
         let recentTournament = await prisma.tournament.findFirst({

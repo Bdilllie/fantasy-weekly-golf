@@ -17,7 +17,9 @@ jobs:
         run: |
           echo "🏌️ Triggering OWGR rankings update..."
           
-          response=$(curl -s -w "\n%{http_code}" -X GET ${{ secrets.SITE_URL }}/api/sync-owgr)
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            ${{ secrets.SITE_URL }}/api/sync-owgr)
           http_code=$(echo "$response" | tail -n1)
           body=$(echo "$response" | head -n-1)
           
