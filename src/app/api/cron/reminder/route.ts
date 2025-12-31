@@ -94,7 +94,7 @@ export async function GET(request: Request) {
                 if (process.env.RESEND_API_KEY) {
                     try {
                         await resend.emails.send({
-                            from: 'Fantasy Golf Reminder <reminder@fantasygolfweek.com>', // Note: This domain must be verified in Resend
+                            from: 'Fantasy Golf Reminder <onboarding@resend.dev>', // Using Resend test domain until fantasygolfweek.com is verified
                             to: team.user.email,
                             subject: `⛳ Reminder: Get your pick in for ${tournament.name}`,
                             html: emailHtml,

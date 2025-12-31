@@ -184,7 +184,7 @@ export async function GET(request: Request) {
 
                 if (process.env.RESEND_API_KEY) {
                     await resend.emails.send({
-                        from: 'Gamble Stats <stats@fantasygolfweek.com>',
+                        from: 'Gamble Stats <onboarding@resend.dev>',
                         to: team.user.email,
                         subject: `Official Results: ${recentTournament.name} - ${team.name}`,
                         html: individualHtml,
@@ -212,7 +212,7 @@ export async function GET(request: Request) {
             if (process.env.RESEND_API_KEY) {
                 // Send Newsletter Sample
                 await resend.emails.send({
-                    from: 'The Gentleman\'s Gamble <commissioner@fantasygolfweek.com>',
+                    from: 'The Gentleman\'s Gamble <onboarding@resend.dev>',
                     to: testEmail,
                     subject: `[SAMPLE] Weekly Roundup - ${recentTournament.name}`,
                     html: emailHtml,
@@ -258,7 +258,7 @@ export async function GET(request: Request) {
                         </div>
                     `;
                     await resend.emails.send({
-                        from: 'Gamble Stats <stats@fantasygolfweek.com>',
+                        from: 'Gamble Stats <onboarding@resend.dev>',
                         to: testEmail,
                         subject: `[SAMPLE] Official Results: ${recentTournament.name}`,
                         html: individualHtml,
@@ -270,7 +270,7 @@ export async function GET(request: Request) {
 
         if (process.env.RESEND_API_KEY) {
             await resend.emails.send({
-                from: 'The Gentleman\'s Gamble <commissioner@fantasygolfweek.com>',
+                from: 'The Gentleman\'s Gamble <onboarding@resend.dev>',
                 to: process.env.ADMIN_EMAIL || "admin@example.com",
                 bcc: uniqueRecipients,
                 subject: `Weekly Roundup - ${recentTournament.name}`,
