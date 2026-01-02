@@ -162,12 +162,10 @@ export async function GET(request: Request) {
                                     <td style="padding: 8px 0; color: #666;">Raw Earnings:</td>
                                     <td style="padding: 8px 0; font-weight: bold; text-align: right;">$${pick.rawEarnings.toLocaleString()}</td>
                                 </tr>
-                                ${pick.multiplier > 1 ? `
                                 <tr>
-                                    <td style="padding: 8px 0; color: #00573F; font-weight: bold;">${recentTournament.type} Boost:</td>
-                                    <td style="padding: 8px 0; color: #00573F; font-weight: bold; text-align: right;">x${pick.multiplier}</td>
+                                    <td style="padding: 8px 0; color: #666;">Multiplier:</td>
+                                    <td style="padding: 8px 0; font-weight: bold; text-align: right;">x${pick.multiplier || 1}</td>
                                 </tr>
-                                ` : ''}
                                 <tr style="border-top: 2px solid #ddd;">
                                     <td style="padding: 15px 0 0 0; font-size: 18px; font-weight: bold; color: #1a1a1a;">Total Points:</td>
                                     <td style="padding: 15px 0 0 0; font-size: 18px; font-weight: bold; color: #00573F; text-align: right;">${pick.earnings.toLocaleString()} pts</td>
@@ -186,7 +184,7 @@ export async function GET(request: Request) {
                     await resend.emails.send({
                         from: 'Gamble Stats <onboarding@resend.dev>',
                         to: team.user.email,
-                        subject: `Official Results: ${recentTournament.name} - ${team.name}`,
+                        subject: `Your Gentleman's Gamble Weekend Score`,
                         html: individualHtml,
                     });
                 } else {
@@ -242,12 +240,10 @@ export async function GET(request: Request) {
                                         <td style="padding: 8px 0; color: #666;">Raw Earnings:</td>
                                         <td style="padding: 8px 0; font-weight: bold; text-align: right;">$${pick.rawEarnings.toLocaleString()}</td>
                                     </tr>
-                                    ${(pick.multiplier && pick.multiplier > 1) ? `
                                     <tr>
-                                        <td style="padding: 8px 0; color: #00573F; font-weight: bold;">${recentTournament.type} Boost:</td>
-                                        <td style="padding: 8px 0; color: #00573F; font-weight: bold; text-align: right;">x${pick.multiplier}</td>
+                                        <td style="padding: 8px 0; color: #666;">Multiplier:</td>
+                                        <td style="padding: 8px 0; font-weight: bold; text-align: right;">x${pick.multiplier || 1}</td>
                                     </tr>
-                                    ` : ''}
                                     <tr style="border-top: 2px solid #ddd;">
                                         <td style="padding: 15px 0 0 0; font-size: 18px; font-weight: bold; color: #1a1a1a;">Total Points:</td>
                                         <td style="padding: 15px 0 0 0; font-size: 18px; font-weight: bold; color: #00573F; text-align: right;">${pick.earnings.toLocaleString()} pts</td>
@@ -260,7 +256,7 @@ export async function GET(request: Request) {
                     await resend.emails.send({
                         from: 'Gamble Stats <onboarding@resend.dev>',
                         to: testEmail,
-                        subject: `[SAMPLE] Official Results: ${recentTournament.name}`,
+                        subject: `Your Gentleman's Gamble Weekend Score`,
                         html: individualHtml,
                     });
                 }

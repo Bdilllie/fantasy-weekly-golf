@@ -249,21 +249,41 @@ export default async function HomePage() {
               <div className="absolute top-0 right-0 p-1 opacity-10 group-hover:opacity-20 transition">
                 <span className="text-6xl font-serif font-bold italic">$</span>
               </div>
-              <p className="text-[#FDDA0D] text-[10px] font-black uppercase tracking-[0.2em] mb-2">
-                {teamCount >= 40 ? 'Official Prize Pool' : 'Estimated Prize Pool'}
-              </p>
-              <p className="text-4xl font-serif font-bold text-white mb-2">
-                ${(teamCount * 500).toLocaleString()}
-              </p>
-              <div className="flex flex-col gap-1">
-                <p className="text-white/40 text-[9px] font-bold uppercase tracking-widest leading-none">
-                  Total Entries: {teamCount} / 40
+              <div className="relative z-10">
+                <p className="text-[#FDDA0D] text-[10px] font-black uppercase tracking-[0.2em] mb-2">
+                  {teamCount >= 40 ? 'Official Prize Pool' : 'Estimated Prize Pool'}
                 </p>
-                {teamCount < 40 && (
-                  <p className="text-[#FDDA0D] text-[10px] font-black uppercase tracking-tighter italic">
-                    {40 - teamCount} Spots Remaining 🏌️‍♂️
+                <div className="mb-4">
+                  <p className="text-4xl font-serif font-bold text-white leading-none">
+                    ${(teamCount * 500).toLocaleString()}
                   </p>
-                )}
+                  <p className="text-[#FDDA0D] text-[10px] font-bold mt-1 opacity-80 italic">
+                    Based on {teamCount} entrants
+                  </p>
+                </div>
+
+                {/* Progress Bar */}
+                <div className="max-w-[180px] mx-auto mb-4">
+                  <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden border border-white/5">
+                    <div
+                      className="h-full bg-[#FDDA0D] shadow-[0_0_10px_#FDDA0D] transition-all duration-1000"
+                      style={{ width: `${Math.min((teamCount / 40) * 100, 100)}%` }}
+                    ></div>
+                  </div>
+                  <div className="flex justify-between mt-1.5 px-0.5">
+                    <span className="text-[8px] font-black text-white/40 uppercase tracking-tighter">{teamCount} / 40</span>
+                    <span className="text-[8px] font-black text-[#FDDA0D] uppercase tracking-tighter">
+                      {teamCount >= 40 ? 'LEAGUE FULL' : `${40 - teamCount} SPOTS LEFT`}
+                    </span>
+                  </div>
+                </div>
+
+                <Link
+                  href="/register"
+                  className="inline-block w-full py-2.5 bg-[#FDDA0D] text-[#00573F] text-xs font-black uppercase tracking-widest rounded-lg hover:bg-white transition-colors shadow-lg"
+                >
+                  {teamCount >= 40 ? 'Join Waitlist' : 'Reserve My Spot'}
+                </Link>
               </div>
             </section>
           </div>

@@ -27,8 +27,8 @@ export default async function RulesPage() {
                         </h2>
                         <div className="text-gray-700 space-y-4 text-lg leading-relaxed">
                             <p>
-                                <span className="text-[#00573F] font-bold">The Gentleman's Gamble</span> is a prestige season-long fantasy golf competition where 40 players
-                                compete for a <span className="text-[#00573F] font-bold">$20,000 prize pool</span>.
+                                <span className="text-[#00573F] font-bold">The Gentleman's Gamble</span> is a prestige season-long fantasy golf competition with a target field of 40 players
+                                and an official prize pool of <span className="text-[#00573F] font-bold">${(Math.max(teamCount, 40) * 500).toLocaleString()}</span>.
                             </p>
                             <p>
                                 Each week, you pick one PGA Tour golfer to represent your team. Your score
