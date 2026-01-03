@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import Header from "@/components/Header";
+import PaymentStatusTable from "@/components/PaymentStatusTable";
 
 // Sample tournament data (will be fetched from API later)
 const CURRENT_TOURNAMENT = {
@@ -414,6 +415,11 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Payment Status Table */}
+        <section className="mt-12 mb-12">
+          <PaymentStatusTable />
         </section>
       </main>
     </div>

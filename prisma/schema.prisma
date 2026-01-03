@@ -55,17 +55,22 @@ model User {
 }
 
 model Team {
-  id               String   @id @default(cuid())
-  name             String   @unique
+  id               String               @id @default(cuid())
+  name             String               @unique
   division         String?
-  totalPoints      Float    @default(0)
-  clinchedPlayoffs Boolean  @default(false)
-  clinchedDivision Boolean  @default(false)
-  userId           String   @unique
-  isPaid           Boolean  @default(false)
-  createdAt        DateTime @default(now())
+  totalPoints      Float                @default(0)
+  clinchedPlayoffs Boolean              @default(false)
+  clinchedDivision Boolean              @default(false)
+  userId           String               @unique
+  isPaid           Boolean              @default(false)
+  stripePaymentId  String? // Stripe PaymentIntent ID
+  paidAt           DateTime? // Timestamp of payment
+  payoutAmount     Int? // Amount won (if applicable)
+  stripeTransferId String? // Stripe Transfer ID for payout
+  createdAt        DateTime             @default(now())
   picks            Pick[]
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions     PaymentTransaction[]
 }
 
 model Tournament {
@@ -113,4 +118,18 @@ model Golfer {
   createdAt   DateTime @default(now())
 
   @@index([owgrRank])
+}
+
+model PaymentTransaction {
+  id        String   @id @default(cuid())
+  teamId    String
+  team      Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  amount    Int // Amount in cents (e.g., 51500 for $515.00)
+  type      String // "BUY_IN" or "PAYOUT"
+  stripeId  String   @unique // PaymentIntent ID or Transfer ID
+  status    String // "pending", "succeeded", "failed"
+  createdAt DateTime @default(now())
+
+  @@index([teamId])
+  @@index([status])
 }
