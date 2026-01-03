@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 import { prisma } from "@/lib/prisma";
-import PaymentButton from "@/components/PaymentButton";
+import ManualPaymentPage from "@/components/ManualPaymentPage";
 import Header from "@/components/Header";
 import Link from "next/link";
 
@@ -68,7 +68,11 @@ export default async function PaymentPage() {
         <div className="min-h-screen">
             <Header />
             <main className="max-w-4xl mx-auto px-4 py-12">
-                <PaymentButton teamId={user.team.id} teamName={user.team.name} />
+                <ManualPaymentPage
+                    teamId={user.team.id}
+                    teamName={user.team.name}
+                    userName={user.name || "Unknown"}
+                />
 
                 <div className="mt-8 p-6 bg-gray-50 border border-gray-200 rounded-xl">
                     <h3 className="font-bold text-gray-800 mb-4">What happens after payment?</h3>
@@ -77,19 +81,19 @@ export default async function PaymentPage() {
                             <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
-                            <span><strong>Instant Activation:</strong> Your account will be activated automatically within seconds.</span>
+                            <span><strong>Notify Commissioner:</strong> Click the button above after paying on Venmo.</span>
                         </li>
                         <li className="flex items-start gap-3">
                             <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
-                            <span><strong>Secure Escrow:</strong> Your $500 is held securely by Stripe until the season ends.</span>
+                            <span><strong>Manual Verification:</strong> The commissioner will verify your payment and activate your account.</span>
                         </li>
                         <li className="flex items-start gap-3">
                             <svg className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                             </svg>
-                            <span><strong>Automatic Payouts:</strong> Winners will receive payouts directly to their bank account at season end.</span>
+                            <span><strong>Start Playing:</strong> Once verified, you can access the full dashboard and make picks.</span>
                         </li>
                     </ul>
                 </div>
